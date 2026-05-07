@@ -1,0 +1,34 @@
+<div class="list-item" [class.list-item--active]="isSelected" (click)="onSelect()" (keydown.enter)="onSelect()"
+  (keydown.space)="onSelect()" tabindex="0" role="button" [attr.aria-pressed]="isSelected"
+  [attr.aria-label]="'Select contact ' + contact.fullName">
+  <app-avatar [avatarUrl]="contact.avatarUrl" [name]="contact.fullName" [status]="contact.status"
+    size="sm"></app-avatar>
+
+  <div class="list-item__info">
+    <span class="list-item__name">{{ contact.fullName }}</span>
+    <span class="list-item__role">{{ contact.jobTitle }}</span>
+  </div>
+
+  <div class="list-item__actions" (click)="$event.stopPropagation()">
+    <button class="icon-btn" title="Message" [attr.aria-label]="'Message ' + contact.fullName"
+      (click)="onMessage.emit(contact)">
+      <svg width="15" height="15"  viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M11.25 7.48828C11.25 7.69922 11.168 7.875 11.0039 8.01562C10.8633 8.15625 10.6875 8.22656 10.4766 8.22656H2.98828L0 11.25V0.738281C0 0.527344 0.0703125 0.351562 0.210938 0.210938C0.351562 0.0703125 0.527344 0 0.738281 0H10.4766C10.6875 0 10.8633 0.0703125 11.0039 0.210938C11.168 0.351562 11.25 0.527344 11.25 0.738281V7.48828ZM14.2383 2.98828C14.4492 2.98828 14.625 3.05859 14.7656 3.19922C14.9062 3.33984 14.9766 3.51562 14.9766 3.72656V14.9766L11.9883 11.9883H3.72656C3.51562 11.9883 3.33984 11.918 3.19922 11.7773C3.05859 11.6367 2.98828 11.4609 2.98828 11.25V9.73828H12.7266V2.98828H14.2383Z"
+         fill="currentColor" />
+      </svg>
+    </button>
+    <button class="icon-btn" title="Call" [attr.aria-label]="'Call ' + contact.fullName" (click)="onCall.emit(contact)">
+      <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+        <path
+          d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+      </svg>
+    </button>
+    <button class="icon-btn" title="More options" [attr.aria-label]="'More options for ' + contact.fullName"
+      (click)="onMore.emit(contact)">
+      <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+        <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
+      </svg>
+    </button>
+  </div>
+</div>

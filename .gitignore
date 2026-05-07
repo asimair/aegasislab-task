@@ -1,0 +1,14 @@
+# Dependencies
+/node_modules
+/.angular
+
+# Build output
+/dist
+/tmp
+
+# IDEs and editors
+/.vscode
+.DS_Store
+
+# Environment variables
+.env

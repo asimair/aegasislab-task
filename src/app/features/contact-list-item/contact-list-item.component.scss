@@ -1,0 +1,92 @@
+
+  .list-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background 0.15s ease;
+  outline: none;
+  position: relative;
+
+  &:focus-visible {
+    box-shadow: 0 0 0 2px var(--color-accent);
+  }
+}
+
+.list-item--active {
+  .list-item__name {
+     color: var(--color-text-primary);
+  }
+
+  .icon-btn {
+    background: #f1f1f1; 
+    color: var(--color-accent);
+  }
+}
+
+.list-item__info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.list-item__name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.12s ease;
+}
+
+.list-item__role {
+  font-size: 11.5px;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.list-item__actions {
+  display: flex;
+  gap: 2px;
+  opacity: 1;
+  transition: opacity 0.15s ease;
+
+  .list-item:hover &,
+  .list-item--active & {
+    opacity: 1;
+  }
+}
+
+.icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid #eceef5;
+  background: transparent;
+  border-radius: 6px;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  padding: 0;
+  background: white;
+  transition:
+    color 0.12s ease,
+    background 0.12s ease;
+
+  svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  &:hover {
+    color: var(--color-accent);
+    background: transparent;
+  }
+}

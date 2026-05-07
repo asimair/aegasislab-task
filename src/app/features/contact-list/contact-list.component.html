@@ -1,0 +1,94 @@
+
+    <div class="contact-list">
+     
+      <header class="contact-list__header" role="banner">
+        <button class="menu-btn" aria-label="Open navigation menu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <line x1="3" y1="12" x2="21" y2="12"/>
+            <line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
+        <h1 class="contact-list__title">Contacts</h1>
+        <nav class="contact-list__nav" aria-label="Pagination">
+          <button class="nav-btn" aria-label="Previous page">
+            <svg viewBox="0 0 20 20" fill="#989ab4" aria-hidden="true">
+              <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"/>
+            </svg>
+          </button>
+          <button class="nav-btn" aria-label="Next page">
+            <svg viewBox="0 0 20 20" fill="#989ab4" aria-hidden="true">
+              <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+            </svg>
+          </button>
+        </nav>
+      </header>
+
+      
+      <div class="contact-list__search">
+        <label class="search-label" for="contact-search">Search for a contact</label>
+        <div class="search-input-wrapper">
+          <input
+            id="contact-search"
+            type="search"
+            class="search-input"
+            placeholder="Name, email or phone number"
+            [(ngModel)]="searchQuery"
+            (ngModelChange)="onSearch($event)"
+            autocomplete="off"
+            aria-label="Search contacts"
+          />
+          <button class="search-btn" aria-label="Search" (click)="onSearch(searchQuery)">
+            <svg viewBox="0 0 20 20" fill="#000000" aria-hidden="true">
+              <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+ 
+     
+
+      
+      <div *ngIf="isLoadingList$ | async" class="contact-list__state" aria-live="polite">
+        <div class="skeleton-list">
+          <div *ngFor="let i of [1,2,3,4,5,6]" class="skeleton-item">
+            <div class="skeleton-avatar"></div>
+            <div class="skeleton-text">
+              <div class="skeleton-line skeleton-line--name"></div>
+              <div class="skeleton-line skeleton-line--role"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="listError$ | async as error" class="contact-list__state contact-list__error" role="alert">
+        <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+        </svg>
+        <p>{{ error }}</p>
+        <button class="retry-btn" (click)="reload()">Retry</button>
+      </div>
+
+      <div
+        *ngIf="!(isLoadingList$ | async) && !(listError$ | async)"
+        class="contact-list__items"
+        role="list"
+        aria-label="Contacts"
+      >
+        <ng-container *ngIf="contacts$ | async as contacts">
+          <app-contact-list-item
+            *ngFor="let contact of contacts; trackBy: trackById"
+            [contact]="contact"
+            [isSelected]="(selectedContact$ | async)?.id === contact.id"
+            (selected)="onContactSelect($event)"
+            role="listitem"
+          ></app-contact-list-item>
+
+          <div *ngIf="contacts.length === 0" class="contact-list__empty" aria-live="polite">
+            <p>No contacts match "{{ searchQuery }}"</p>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  

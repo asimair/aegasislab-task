@@ -1,0 +1,185 @@
+<div class="contact-details">
+
+    <ng-container *ngIf="isLoadingDetail$ | async">
+        <div class="details-skeleton" aria-live="polite" aria-label="Loading contact details">
+            <div class="sk sk-avatar"></div>
+            <div class="sk sk-name"></div>
+            <div class="sk sk-role"></div>
+            <div class="sk sk-actions"></div>
+            <div class="details-skeleton__fields">
+                <div *ngFor="let i of [1,2,3,4]" class="sk sk-field"></div>
+            </div>
+        </div>
+    </ng-container>
+
+    <div *ngIf="detailError$ | async as error" class="details-error" role="alert">
+        <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd"
+                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                clip-rule="evenodd" />
+        </svg>
+        <p>{{ error }}</p>
+    </div>
+
+
+    <div *ngIf="!(isLoadingDetail$ | async) && !(detailError$ | async) && !(selectedContact$ | async)"
+        class="details-empty">
+        <div class="details-empty__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+        </div>
+        <p class="details-empty__text">Select a contact to view details</p>
+    </div>
+
+    <ng-container *ngIf="selectedContact$ | async as contact">
+        <div class="details-content" *ngIf="!(isLoadingDetail$ | async)">
+
+            <button class="back-btn" (click)="onBack()" aria-label="Back to contact list">
+                <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd"
+                        d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                        clip-rule="evenodd" />
+                </svg>
+                Back
+            </button>
+
+            <div class="details-header">
+                <app-avatar [avatarUrl]="contact.avatarUrl" [name]="contact.fullName" [status]="contact.status"
+                    size="lg"></app-avatar>
+                <div class="details-header__info">
+                    <h1 class="details-header__name">{{ contact.fullName }}</h1>
+                    <p class="details-header__role">{{ contact.jobTitle }}<span *ngIf="contact.company"> · {{
+                            contact.company }}</span></p>
+                    <div class="details-actions">
+                        <button class="action-btn action-btn--primary"
+                            [attr.aria-label]="'Message ' + contact.fullName">
+                            <svg width="15" height="15" viewBox="0 0 15 15" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M11.25 7.48828C11.25 7.69922 11.168 7.875 11.0039 8.01562C10.8633 8.15625 10.6875 8.22656 10.4766 8.22656H2.98828L0 11.25V0.738281C0 0.527344 0.0703125 0.351562 0.210938 0.210938C0.351562 0.0703125 0.527344 0 0.738281 0H10.4766C10.6875 0 10.8633 0.0703125 11.0039 0.210938C11.168 0.351562 11.25 0.527344 11.25 0.738281V7.48828ZM14.2383 2.98828C14.4492 2.98828 14.625 3.05859 14.7656 3.19922C14.9062 3.33984 14.9766 3.51562 14.9766 3.72656V14.9766L11.9883 11.9883H3.72656C3.51562 11.9883 3.33984 11.918 3.19922 11.7773C3.05859 11.6367 2.98828 11.4609 2.98828 11.25V9.73828H12.7266V2.98828H14.2383Z"
+                                    fill="currentColor" />
+                            </svg>
+                            Message
+                        </button>
+                        <button class="action-btn" [attr.aria-label]="'Call ' + contact.fullName">
+                            <svg viewBox="0 0 20 20" fill="#8083a3" aria-hidden="true">
+                                <path
+                                    d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+                            </svg>
+                        </button>
+                        <button class="action-btn" [attr.aria-label]="'Video call ' + contact.fullName">
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M4 12V17C4 18.6569 5.34315 20 7 20H17C18.6569 20 20 18.6569 20 17V12M12 15V4M12 4L8 8M12 4L16 8"
+                                    stroke="#7e86a9" stroke-width="2.8" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+
+                        </button>
+                        <button class="action-btn" aria-label="More options">
+                            <svg viewBox="0 0 20 20" fill="#8083a3" aria-hidden="true">
+                                <path
+                                    d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+            <div class="details-fields">
+
+                <div *ngIf="contact.bio" class="field-row">
+                    <span class="field-label">Bio</span>
+                    <p class="field-value field-value--bio">{{ contact.bio }}</p>
+                </div>
+
+
+                <div *ngIf="contact.emails.length > 0" class="field-row">
+                    <span class="field-label">Email</span>
+                    <div class="field-value field-value--bio">
+                        <div *ngFor="let email of contact.emails" class="field-entry">
+                            <a [href]="'mailto:' + email.email" class="field-link">{{ email.email }}</a>
+                            <span *ngIf="email.isPrimary" class="badge">Primary</span>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div *ngIf="contact.dialIn" class="field-row">
+                    <span class="field-label">Dial</span>
+                    <span class="field-value field-value--bio">{{ contact.dialIn }}</span>
+                </div>
+
+
+                <div *ngIf="contact.meetingLink" class="field-row">
+                    <span class="field-label">Meeting</span>
+                    <a [href]="contact.meetingLink" target="_blank" rel="noopener noreferrer"
+                        class="field-value field-link field-value--bio">
+                        {{ contact.meetingLink }}
+                    </a>
+                </div>
+
+
+                <div *ngIf="contact.phones.length > 0" class="field-row">
+                    <span class="field-label">Phone</span>
+                    <div class="field-value field-value--bio">
+                        <div *ngFor="let phone of contact.phones" class="field-entry">
+                            <a [href]="'tel:' + phone.number" class="field-link">{{ phone.number }}</a>
+                            <span *ngIf="phone.isPrimary" class="badge">Primary</span>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div *ngIf="hasSocialLinks(contact)" class="field-row">
+                    <span class="field-label-social">Social</span>
+                    <div class="social-links">
+                        <a *ngIf="contact.socialLinks.facebook" [href]="'https://' + contact.socialLinks.facebook"
+                            target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="Facebook">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+
+                                <path fill="#6b7280"
+                                    d="M15 13.5h2.5l1-3.5h-3.5V8c0-1 .5-1.5 1.5-1.5h2V3.5s-1.5-.5-3-.5c-3 0-4.5 2-4.5 4.5V10h-2.5v3.5H11V21h4v-7.5z" />
+
+                            </svg>
+                        </a>
+                        <a *ngIf="contact.socialLinks.instagram" [href]="'https://' + contact.socialLinks.instagram"
+                            target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="Instagram">
+                            <svg viewBox="0 0 24 24" fill="#7e86a9" aria-hidden="true">
+                                <path
+                                    d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
+                            </svg>
+                        </a>
+                        <a *ngIf="contact.socialLinks.twitter" [href]="'https://' + contact.socialLinks.twitter"
+                            target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="Twitter / X">
+                            <svg viewBox="0 0 24 24" fill="#7e86a9" aria-hidden="true">
+                                <path
+                                    d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                            </svg>
+                        </a>
+                        <a *ngIf="contact.socialLinks.linkedin" [href]="'https://' + contact.socialLinks.linkedin"
+                            target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="LinkedIn">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path fill="#7e86a9"
+                                    d="M6.5 21.5h-5v-13h5v13zM4 6.5C2.5 6.5 1.5 5.5 1.5 4c0-1.5 1-2.5 2.5-2.5s2.5 1 2.5 2.5c0 1.5-1 2.5-2.5 2.5zM22.5 21.5h-5v-7c0-1.5-.5-2.5-2-2.5-1 0-1.5.5-2 1.5v8h-5v-13h5v2s1-1.5 3-1.5c3.5 0 6 2 6 6.5v6z" />
+                            </svg>
+
+                        </a>
+                        <a *ngIf="contact.socialLinks.instagram" class="social-btn" aria-label="Google+">
+                            <svg viewBox="0 0 24 24" fill="#7e86a9" aria-hidden="true">
+                                <path
+                                    d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </ng-container>
+</div>

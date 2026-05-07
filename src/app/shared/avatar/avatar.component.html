@@ -1,0 +1,13 @@
+ <div class="avatar" [ngClass]="['avatar--' + size, 'avatar--status-' + status]">
+      <img
+        *ngIf="avatarUrl; else initials"
+        [src]="avatarUrl"
+        [alt]="name"
+        class="avatar__image"
+        (error)="onImageError()"
+      />
+      <ng-template #initials>
+        <span class="avatar__initials">{{ name | initials }}</span>
+      </ng-template>
+      <span *ngIf="showStatus" class="avatar__status-dot" [attr.aria-label]="status"></span>
+    </div>
